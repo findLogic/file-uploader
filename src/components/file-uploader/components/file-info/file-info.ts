@@ -51,7 +51,10 @@ export class ComponentFileInfo extends LitElement {
     if (this.appState === "loadingInfo") {
       this.resetAnimation();
       this.startAnimation();
-    } else if (this.appState === "readyToUpload") {
+    } else if (
+      this.appState === "readyToUpload" ||
+      this.appState === "loading"
+    ) {
       this.stopAnimation();
       this.progress = 1;
       this.hideProgress = true;
