@@ -4,7 +4,7 @@
 
 ## Демо
 
-**[Посмотреть демо на Vercel](https://file-uploader-yourname.vercel.app/)**
+**[Посмотреть демо на Vercel](https://file-uploader-ecru.vercel.app)**
 
 ## Возможности
 
