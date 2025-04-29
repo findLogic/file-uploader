@@ -1,1 +1,1 @@
-import "./components/file-uploader/file-uploader";
+import './components/file-uploader/file-uploader';

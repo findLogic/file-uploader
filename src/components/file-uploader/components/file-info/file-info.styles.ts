@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const fileInfoStyles = css`
   .file {
@@ -16,6 +16,7 @@ export const fileInfoStyles = css`
     background-color: var(--ligth-white);
     border-radius: 10px;
     border: 1px solid #a4a4a4;
+    transition: all 0.6s linear;
   }
 
   .file[disabled] {
@@ -68,7 +69,6 @@ export const fileInfoStyles = css`
     line-height: 10px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     max-width: calc(100% - 30px);
     flex-grow: 1;
     transition:

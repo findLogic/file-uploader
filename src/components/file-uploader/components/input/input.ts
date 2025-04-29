@@ -1,24 +1,24 @@
-import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { UploadState } from "../../types/types";
-import { inputStyles } from "./input.styles";
+import { LitElement, html } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { UploadState } from '../../types/types';
+import { inputStyles } from './input.styles';
 
-@customElement("component-input")
+@customElement('component-input')
 export class ComponentInput extends LitElement {
   static styles = [inputStyles];
 
   @property({ type: String })
-  appState: UploadState = "idle";
+  appState: UploadState = 'idle';
 
   @state()
-  private inputValue = "";
+  private inputValue = '';
 
   render() {
-    if (this.appState === "idle") {
+    if (this.appState === 'idle') {
       this.clearInput();
     }
 
-    if (this.appState !== "idle" && this.appState !== "readyToDrop") {
+    if (this.appState !== 'idle' && this.appState !== 'readyToDrop') {
       return html``;
     }
 
@@ -35,9 +35,7 @@ export class ComponentInput extends LitElement {
           action="filename-changed"
           top="6px"
           right="6px"
-          color=${this.inputValue.length > 0
-            ? "var(--app-accent)"
-            : "var(--grey)"}
+          color=${this.inputValue.length > 0 ? 'var(--app-accent)' : 'var(--grey)'}
           only-icon
           @action-triggered=${this.clearInput}
         ></component-close-button>
@@ -48,9 +46,9 @@ export class ComponentInput extends LitElement {
   private handleInput(e: Event) {
     this.inputValue = (e.target as HTMLInputElement).value;
     this.dispatchEvent(
-      new CustomEvent("action-triggered", {
+      new CustomEvent('action-triggered', {
         detail: {
-          action: "filename-changed",
+          action: 'filename-changed',
           value: this.inputValue,
         },
         bubbles: true,
@@ -60,6 +58,6 @@ export class ComponentInput extends LitElement {
   }
 
   private clearInput() {
-    this.inputValue = "";
+    this.inputValue = '';
   }
 }

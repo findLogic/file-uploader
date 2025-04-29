@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const sendButtonStyles = css`
   .upload-button {
@@ -12,6 +12,7 @@ export const sendButtonStyles = css`
     font-size: 20px;
     margin-top: 10px;
     cursor: not-allowed;
+    transition: all 0.6s linear;
   }
 
   .upload-button:not(:disabled) {

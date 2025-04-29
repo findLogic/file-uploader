@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const inputStyles = css`
   .input-container {
@@ -12,6 +12,7 @@ export const inputStyles = css`
     border-radius: 10px;
     border: 1px solid #a4a4a4;
     position: relative;
+    transition: all 0.14s linear;
   }
 
   .input-container input {

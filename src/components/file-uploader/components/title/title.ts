@@ -1,21 +1,20 @@
-import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { UploadState } from "../../types/types";
-import { titleStyles } from "./title.styles";
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { UploadState } from '../../types/types';
+import { titleStyles } from './title.styles';
 
-@customElement("component-title")
+@customElement('component-title')
 export class ComponentTitle extends LitElement {
   static styles = [titleStyles];
 
   @property({ type: String })
-  appState: UploadState = "idle";
+  appState: UploadState = 'idle';
 
   render() {
-    if (
-      this.appState === "message-success" ||
-      this.appState === "message-error"
-    ) {
-      return html``;
+    if (this.appState === 'message-success' || this.appState === 'message-error') {
+      return html` <div class="title-container">
+        <h2 class="title">Загрузочное окно</h2>
+      </div>`;
     }
 
     return html`
@@ -28,17 +27,15 @@ export class ComponentTitle extends LitElement {
 
   private renderInstruction() {
     switch (this.appState) {
-      case "idle":
+      case 'idle':
         return html`<p class="instruction">Перед загрузкой дайте имя файлу</p>`;
-      case "readyToDrop":
-        return html`<p class="instruction">
-          Перенесите ваш файл в область ниже
-        </p> `;
-      case "readyToUpload":
+      case 'readyToDrop':
+        return html`<p class="instruction">Перенесите ваш файл в область ниже</p> `;
+      case 'readyToUpload':
         return html`<p class="instruction">Загрузите ваш файл</p>`;
-      case "loadingInfo":
+      case 'loadingInfo':
         return html`<p class="instruction">Обработка файла...</p>`;
-      case "loading":
+      case 'loading':
         return html`<div class="loader-container">
           <div class="loader"></div>
         </div>`;

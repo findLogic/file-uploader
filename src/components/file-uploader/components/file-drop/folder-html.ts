@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { html } from 'lit';
 
 export const folderHtml = () =>
   html` <div class="folder">
@@ -167,12 +167,7 @@ export const folderHtml = () =>
           color-interpolation-filters="sRGB"
         >
           <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="BackgroundImageFix"
-            result="shape"
-          />
+          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -182,20 +177,10 @@ export const folderHtml = () =>
           <feOffset dy="2.52399" />
           <feGaussianBlur stdDeviation="1.26199" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="shape"
-            result="effect1_innerShadow_147_32"
-          />
+          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_147_32" />
         </filter>
-        <clipPath
-          id="bgblur_0_147_32_clip_path"
-          transform="translate(-4.00827 -40.5331)"
-        >
+        <clipPath id="bgblur_0_147_32_clip_path" transform="translate(-4.00827 -40.5331)">
           <path
             d="M6.53848 59.2703C6.29138 50.3789 13.4403 43.0415 22.3351 43.0572L160.386 43.3008C168.931 43.3158 175.911 50.1331 176.128 58.6761L177.406 109.142C177.63 117.987 170.537 125.286 161.689 125.316L23.7824 125.779C15.2203 125.807 8.1985 119.001 7.96064 110.442L6.53848 59.2703Z"
           />

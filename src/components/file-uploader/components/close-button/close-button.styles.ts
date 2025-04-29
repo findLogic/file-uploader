@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const closeButtonStyles = css`
   :host {
@@ -6,6 +6,7 @@ export const closeButtonStyles = css`
     position: absolute;
     top: var(--close-button-top, 0);
     right: var(--close-button-right, 0);
+    z-index: 100;
   }
 
   .close-button {

@@ -1,17 +1,17 @@
-import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { fileInfoStyles } from "./file-info.styles";
-import { UploadState } from "../../types/types";
+import { LitElement, html } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { fileInfoStyles } from './file-info.styles';
+import { UploadState } from '../../types/types';
 
-@customElement("component-file-info")
+@customElement('component-file-info')
 export class ComponentFileInfo extends LitElement {
   static styles = [fileInfoStyles];
 
   @property({ type: String })
-  appState: UploadState = "idle";
+  appState: UploadState = 'idle';
 
   @property()
-  userInputFileName: string = "";
+  userInputFileName: string = '';
 
   @property({ type: Object })
   file: File | null = null;
@@ -27,8 +27,8 @@ export class ComponentFileInfo extends LitElement {
 
   private animationFrameId: number | null = null;
   private startTime: number | null = null;
-  private readonly duration = 1500;
-  private readonly enlargeDelay = 1500;
+  private readonly duration = 1200;
+  private readonly enlargeDelay = 1200;
   private isAnimating = false;
 
   connectedCallback() {
@@ -42,19 +42,16 @@ export class ComponentFileInfo extends LitElement {
   }
 
   willUpdate(changedProperties: Map<string, unknown>) {
-    if (changedProperties.has("appState")) {
+    if (changedProperties.has('appState')) {
       this.handleAppStateChange();
     }
   }
 
   private handleAppStateChange() {
-    if (this.appState === "loadingInfo") {
+    if (this.appState === 'loadingInfo') {
       this.resetAnimation();
       this.startAnimation();
-    } else if (
-      this.appState === "readyToUpload" ||
-      this.appState === "loading"
-    ) {
+    } else if (this.appState === 'readyToUpload' || this.appState === 'loading') {
       this.stopAnimation();
       this.progress = 1;
       this.hideProgress = true;
@@ -76,9 +73,7 @@ export class ComponentFileInfo extends LitElement {
     this.stopAnimation();
     this.startTime = performance.now();
     this.isAnimating = true;
-    this.animationFrameId = requestAnimationFrame(
-      this.animateLoading.bind(this),
-    );
+    this.animationFrameId = requestAnimationFrame(this.animateLoading.bind(this));
   }
 
   private stopAnimation() {
@@ -107,68 +102,92 @@ export class ComponentFileInfo extends LitElement {
     }
 
     if (elapsed < this.enlargeDelay || !this.enlargeText) {
-      this.animationFrameId = requestAnimationFrame(
-        this.animateLoading.bind(this),
-      );
+      this.animationFrameId = requestAnimationFrame(this.animateLoading.bind(this));
     } else {
       this.isAnimating = false;
     }
   }
 
   private getFileExtension(): string {
-    if (!this.file) return "";
+    if (!this.file) return '';
 
     const mimeMap: Record<string, string> = {
-      "text/plain": ".txt",
-      "application/json": ".json",
-      "text/csv": ".csv",
+      'text/plain': '.txt',
+      'application/json': '.json',
+      'text/csv': '.csv',
     };
 
     return this.file.type && mimeMap[this.file.type]
       ? mimeMap[this.file.type]
-      : this.file.name.slice(this.file.name.lastIndexOf(".") || 0);
+      : this.file.name.slice(this.file.name.lastIndexOf('.') || 0);
   }
 
   private dispatchReadyToUpload() {
     this.dispatchEvent(
-      new CustomEvent("action-triggered", {
-        detail: { action: "ready-to-upload" },
+      new CustomEvent('action-triggered', {
+        detail: { action: 'ready-to-upload' },
         bubbles: true,
         composed: true,
       }),
     );
   }
 
-  render() {
-    if (!["loadingInfo", "readyToUpload", "loading"].includes(this.appState)) {
-      return html``;
-    }
+  private formatFileName(name: string, extension: string): string {
+    const nameWithoutExt = name.replace(new RegExp(`${extension}$`), '');
 
+    if (nameWithoutExt.length <= 10) {
+      return name;
+    } else {
+      const firstPart = nameWithoutExt.substring(0, 8);
+      const lastPart = nameWithoutExt.slice(-3);
+      return `${firstPart}...${lastPart}${extension}`;
+    }
+  }
+
+  render() {
     const extension = this.getFileExtension();
-    const displayName = this.userInputFileName + extension;
+    const displayName = this.formatFileName(this.userInputFileName + extension, extension);
     const percent = Math.round(this.progress * 100);
 
-    return html`
-      <div class="file" ?disabled=${this.appState === "loading"}>
+    if (['message-success', 'message-error'].includes(this.appState)) {
+      return html`<div class="file" ?disabled=${true}>
         <div class="file-wrapper">
           <div class="icon" aria-hidden="true"></div>
           <div class="name-upload-line">
             <div class="name-percent">
-              <span class="file-name ${this.enlargeText ? "enlarged" : ""}">
-                ${displayName}
-              </span>
-              <span
-                class="upload-percent ${this.enlargeText ? "enlarged" : ""}"
-              >
+              <span class="file-name enlarged"> ${displayName} </span>
+              <span class="upload-percent enlarged"> 100% </span>
+            </div>
+          </div>
+          <component-close-button
+            top="3px"
+            right="3px"
+            action="clear-file"
+            color="var(--app-accent)"
+            ?disabled=${true}
+            only-icon
+          >
+          </component-close-button>
+        </div>
+      </div>`;
+    } else if (!['loadingInfo', 'readyToUpload', 'loading'].includes(this.appState)) {
+      return html``;
+    }
+
+    return html`
+      <div class="file" ?disabled=${this.appState === 'loading'}>
+        <div class="file-wrapper">
+          <div class="icon" aria-hidden="true"></div>
+          <div class="name-upload-line">
+            <div class="name-percent">
+              <span class="file-name ${this.enlargeText ? 'enlarged' : ''}"> ${displayName} </span>
+              <span class="upload-percent ${this.enlargeText ? 'enlarged' : ''}">
                 ${percent}%
               </span>
             </div>
-            <div class="upload-line ${this.hideProgress ? "hidden" : ""}">
+            <div class="upload-line ${this.hideProgress ? 'hidden' : ''}">
               <div class="rectangle-wrapper">
-                <div
-                  class="rectangle-color"
-                  style="width: ${this.progress * 100}%"
-                ></div>
+                <div class="rectangle-color" style="width: ${this.progress * 100}%"></div>
               </div>
             </div>
           </div>
@@ -177,7 +196,7 @@ export class ComponentFileInfo extends LitElement {
             right="3px"
             action="clear-file"
             color="var(--app-accent)"
-            ?disabled=${this.appState === "loading"}
+            ?disabled=${this.appState === 'loading'}
             only-icon
           >
           </component-close-button>

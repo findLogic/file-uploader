@@ -1,8 +1,8 @@
 export type UploadState =
-  | "idle"
-  | "readyToDrop"
-  | "loadingInfo"
-  | "readyToUpload"
-  | "loading"
-  | "message-success"
-  | "message-error";
+  | 'idle'
+  | 'readyToDrop'
+  | 'loadingInfo'
+  | 'readyToUpload'
+  | 'loading'
+  | 'message-success'
+  | 'message-error';

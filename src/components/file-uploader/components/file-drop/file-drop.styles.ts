@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const fileDropStyles = css`
   .upload-container {
@@ -60,7 +60,6 @@ export const fileDropStyles = css`
     display: inline-block;
     max-width: 180px;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .upload-container.error .upload-text {
@@ -75,5 +74,9 @@ export const fileDropStyles = css`
   input[disabled] + .upload-content {
     pointer-events: none;
     opacity: 0.5;
+  }
+
+  .upload-container.dragging:not(.readyToDrop) {
+    cursor: not-allowed;
   }
 `;

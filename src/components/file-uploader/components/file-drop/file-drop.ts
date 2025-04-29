@@ -1,16 +1,16 @@
-import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
-import { UploadState } from "../../types/types";
-import { fileDropStyles } from "./file-drop.styles";
-import { folderHtml } from "./folder-html";
+import { LitElement, html } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { UploadState } from '../../types/types';
+import { fileDropStyles } from './file-drop.styles';
+import { folderHtml } from './folder-html';
 
-@customElement("component-file-drop")
+@customElement('component-file-drop')
 export class ComponentFileDrop extends LitElement {
   static styles = [fileDropStyles];
 
   @property({ type: String })
-  appState: UploadState = "idle";
+  appState: UploadState = 'idle';
 
   @state()
   private file: File | null = null;
@@ -25,15 +25,15 @@ export class ComponentFileDrop extends LitElement {
 
   updated(changedProperties: Map<string, unknown>) {
     if (
-      changedProperties.has("appState") &&
-      (this.appState === "idle" || this.appState === "readyToDrop")
+      changedProperties.has('appState') &&
+      (this.appState === 'idle' || this.appState === 'readyToDrop')
     ) {
       this.clearFile();
     }
   }
 
   render() {
-    if (["message-error", "message-success"].includes(this.appState)) {
+    if (['message-error', 'message-success'].includes(this.appState)) {
       return html``;
     }
 
@@ -42,7 +42,7 @@ export class ComponentFileDrop extends LitElement {
         class="upload-container ${classMap({
           dragging: this.isDragging,
           error: this.errorMessage !== null,
-          readyToDrop: this.appState === "readyToDrop",
+          readyToDrop: this.appState === 'readyToDrop',
         })}"
         @dragover=${this.handleDragOver}
         @dragleave=${this.handleDragLeave}
@@ -52,7 +52,7 @@ export class ComponentFileDrop extends LitElement {
           <input
             type="file"
             @change=${this.handleFileChange}
-            ?disabled=${this.appState !== "readyToDrop"}
+            ?disabled=${this.appState !== 'readyToDrop'}
             accept=".txt,.json,.csv"
             hidden
           />
@@ -63,18 +63,14 @@ export class ComponentFileDrop extends LitElement {
               ${this.errorMessage
                 ? this.errorMessage
                 : this.file
-                  ? html`<span class="file-name"
-                      >${this.formatFileName(this.file)}</span
-                    >`
-                  : "Перенесите ваш файл в область ниже"}
+                  ? html`<span class="file-name">${this.formatFileName(this.file)}</span>`
+                  : 'Перенесите ваш файл в область ниже'}
             </div>
             ${this.file
               ? html`
-                  <div class="file-info">
-                    Размер: ${(this.file.size / 1024).toFixed(2)} KB
-                  </div>
+                  <div class="file-info">Размер: ${(this.file.size / 1024).toFixed(2)} KB</div>
                 `
-              : ""}
+              : ''}
           </div>
         </label>
       </div>
@@ -83,29 +79,40 @@ export class ComponentFileDrop extends LitElement {
 
   private formatFileName(file: File): string {
     const extension = this.getFileExtension(file);
-    const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+    const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
 
-    return nameWithoutExt.length <= 20
+    return nameWithoutExt.length <= 15
       ? file.name
-      : `${nameWithoutExt.substring(0, 20)}...${extension}`;
+      : `${nameWithoutExt.substring(0, 10)}...${nameWithoutExt.slice(-5)}${extension}`;
   }
 
   private getFileExtension(file: File): string {
     const mimeMap: Record<string, string> = {
-      "text/plain": ".txt",
-      "application/json": ".json",
-      "text/csv": ".csv",
+      'text/plain': '.txt',
+      'application/json': '.json',
+      'text/csv': '.csv',
     };
 
     return file.type && mimeMap[file.type]
       ? mimeMap[file.type]
-      : file.name.slice(Math.max(0, file.name.lastIndexOf(".")));
+      : file.name.slice(Math.max(0, file.name.lastIndexOf('.')));
   }
 
   private handleDragOver(e: DragEvent) {
     e.preventDefault();
-    if (this.appState === "readyToDrop") {
+    if (this.appState === 'readyToDrop') {
       this.isDragging = true;
+      const hasValidFile =
+        e.dataTransfer?.items &&
+        Array.from(e.dataTransfer.items).some((item) => {
+          if (item.kind !== 'file') return false;
+          return ['text/plain', 'application/json', 'text/csv'].includes(item.type);
+        });
+
+      this.isDragging = hasValidFile || false;
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = hasValidFile ? 'copy' : 'none';
+      }
     }
   }
 
@@ -117,7 +124,7 @@ export class ComponentFileDrop extends LitElement {
     e.preventDefault();
     this.isDragging = false;
 
-    if (this.appState !== "readyToDrop" || !e.dataTransfer?.files) return;
+    if (this.appState !== 'readyToDrop' || !e.dataTransfer?.files) return;
 
     this.processFiles(e.dataTransfer.files);
   }
@@ -133,21 +140,21 @@ export class ComponentFileDrop extends LitElement {
     this.clearError();
 
     if (files.length > 1) {
-      this.showError("Можно загрузить только один файл");
+      this.showError('Можно загрузить только один файл');
       return;
     }
 
     const file = files[0];
     const extension = this.getFileExtension(file);
-    const allowedExtensions = [".txt", ".json", ".csv"];
+    const allowedExtensions = ['.txt', '.json', '.csv'];
 
     if (!allowedExtensions.includes(extension)) {
-      this.showError("Допустимы только файлы .txt, .json, .csv");
+      this.showError('Допустимы только файлы .txt, .json, .csv');
       return;
     }
 
     if (file.size > 1024) {
-      this.showError("Файл слишком большой (макс. 1 КБ)");
+      this.showError('Файл слишком большой (макс. 1 КБ)');
       return;
     }
 
@@ -174,11 +181,9 @@ export class ComponentFileDrop extends LitElement {
     this.file = null;
     this.clearError();
 
-    const fileInput = this.shadowRoot?.querySelector(
-      'input[type="file"]',
-    ) as HTMLInputElement;
+    const fileInput = this.shadowRoot?.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = "";
+      fileInput.value = '';
     }
 
     this.dispatchFileChanged();
@@ -186,9 +191,9 @@ export class ComponentFileDrop extends LitElement {
 
   private dispatchFileChanged() {
     this.dispatchEvent(
-      new CustomEvent("action-triggered", {
+      new CustomEvent('action-triggered', {
         detail: {
-          action: "file-changed",
+          action: 'file-changed',
           value: this.file,
         },
         bubbles: true,

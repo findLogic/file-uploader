@@ -1,29 +1,19 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const messageStyles = css`
   .message-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 7px 13px;
     gap: 10px;
     color: var(--white);
     box-sizing: border-box;
-    height: 100%;
 
-    border-radius: 22px;
     flex: none;
     order: 0;
     flex-grow: 0;
     position: relative;
-  }
-
-  .success {
-    background: linear-gradient(180deg, #5f5cf0 0%, #8f8df4 100%);
-  }
-
-  .error {
-    background: linear-gradient(180deg, #f05c5c 0%, #8f8df4 100%);
+    animation: animateMessage 0.2s linear forwards;
   }
 
   .message {
@@ -53,9 +43,31 @@ export const messageStyles = css`
     margin: 0 68.5px;
     font-weight: 300;
     font-size: 14px;
+    opacity: 0;
+    height: 1px;
+    animation: animateFileInfo 0.2s linear forwards;
   }
 
   .file-info p {
     margin: 0;
+  }
+
+  @keyframes animateMessage {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes animateFileInfo {
+    from {
+      opacity: 0;
+      height: 1px;
+    }
+    to {
+      opacity: 1;
+      height: 142px;
+    }
   }
 `;

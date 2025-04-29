@@ -1,19 +1,23 @@
-import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { UploadState } from "../../types/types";
-import { sendButtonStyles } from "./send-button.styles";
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { UploadState } from '../../types/types';
+import { sendButtonStyles } from './send-button.styles';
 
-@customElement("component-send-button")
+@customElement('component-send-button')
 export class ComponentSendButton extends LitElement {
   static styles = [sendButtonStyles];
 
   @property({ type: String })
-  appState: UploadState = "idle";
+  appState: UploadState = 'idle';
 
   render() {
+    if (this.appState === 'message-error' || this.appState === 'message-success') {
+      return html``;
+    }
+
     return html`
       <button
-        ?disabled=${this.appState !== "readyToUpload"}
+        ?disabled=${this.appState !== 'readyToUpload'}
         class="upload-button"
         @click=${this.uploadToServer}
       >
@@ -24,9 +28,9 @@ export class ComponentSendButton extends LitElement {
 
   private uploadToServer() {
     this.dispatchEvent(
-      new CustomEvent("action-triggered", {
+      new CustomEvent('action-triggered', {
         detail: {
-          action: "upload-to-server",
+          action: 'upload-to-server',
         },
         bubbles: true,
         composed: true,

@@ -1,37 +1,37 @@
-import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { closeButtonStyles } from "./close-button.styles";
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { closeButtonStyles } from './close-button.styles';
 
-@customElement("component-close-button")
+@customElement('component-close-button')
 export class ComponentCloseButton extends LitElement {
   static styles = [closeButtonStyles];
 
-  @property({ type: String }) action = "close";
-  @property({ type: String }) top = "0";
-  @property({ type: String }) right = "0";
-  @property({ type: String }) color = "#ffffff";
-  @property({ type: Boolean, attribute: "only-icon" }) onlyIcon = false;
-  @property({ type: Boolean, attribute: "disabled" }) disabled = false;
+  @property({ type: String }) action = 'close';
+  @property({ type: String }) top = '0';
+  @property({ type: String }) right = '0';
+  @property({ type: String }) color = '#ffffff';
+  @property({ type: Boolean, attribute: 'only-icon' }) onlyIcon = false;
+  @property({ type: Boolean, attribute: 'disabled' }) disabled = false;
 
   updated(changedProperties: Map<string, unknown>) {
-    if (changedProperties.has("top") || changedProperties.has("right")) {
-      this.style.setProperty("--close-button-top", this.top);
-      this.style.setProperty("--close-button-right", this.right);
+    if (changedProperties.has('top') || changedProperties.has('right')) {
+      this.style.setProperty('--close-button-top', this.top);
+      this.style.setProperty('--close-button-right', this.right);
     }
 
-    if (changedProperties.has("onlyIcon") || changedProperties.has("color")) {
+    if (changedProperties.has('onlyIcon') || changedProperties.has('color')) {
       if (this.onlyIcon) {
-        this.style.setProperty("--button-size", "20px");
-        this.style.setProperty("--button-bg", "transparent");
-        this.style.setProperty("--icon-size", "12.5px");
-        this.style.setProperty("--button-radius", "0");
-        this.style.setProperty("--button-hover-bg", "none");
+        this.style.setProperty('--button-size', '20px');
+        this.style.setProperty('--button-bg', 'transparent');
+        this.style.setProperty('--icon-size', '12.5px');
+        this.style.setProperty('--button-radius', '0');
+        this.style.setProperty('--button-hover-bg', 'none');
       } else {
-        this.style.setProperty("--button-size", "34px");
-        this.style.setProperty("--icon-size", "17px");
-        this.style.setProperty("--button-radius", "17px");
+        this.style.setProperty('--button-size', '34px');
+        this.style.setProperty('--icon-size', '17px');
+        this.style.setProperty('--button-radius', '17px');
       }
-      this.style.setProperty("--icon-color", this.color);
+      this.style.setProperty('--icon-color', this.color);
     }
   }
 
@@ -54,7 +54,7 @@ export class ComponentCloseButton extends LitElement {
 
   private handleClick() {
     this.dispatchEvent(
-      new CustomEvent("action-triggered", {
+      new CustomEvent('action-triggered', {
         detail: { action: this.action },
         bubbles: true,
         composed: true,
